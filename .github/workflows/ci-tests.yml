@@ -31,6 +31,11 @@ on:
         required: false
         default: '@regressivo'
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   test:
     name: Testes - ${{ matrix.os }} - ${{ matrix.browser }}
