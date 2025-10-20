@@ -5,7 +5,6 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -119,33 +118,21 @@ public class DriverFactory {
                 chromeOptions.addArguments("--remote-allow-origins=*");
                 chromeOptions.addArguments("--disable-dev-shm-usage");
                 chromeOptions.addArguments("--no-sandbox");
+                chromeOptions.addArguments("--window-size=1920,1080");
 
                 if (ConfigurationManager.isHeadless()) {
                     chromeOptions.addArguments("--headless=new");
-                    chromeOptions.addArguments("--window-size=1920,1080");
                     chromeOptions.addArguments("--disable-gpu");
                     chromeOptions.addArguments("--disable-software-rasterizer");
                     chromeOptions.addArguments("--disable-extensions");
                     // User-Agent para evitar detecção de headless
                     chromeOptions.addArguments(
                             "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36");
+                } else {
+                    chromeOptions.addArguments("--start-maximized");
                 }
 
                 webDriver = new ChromeDriver(chromeOptions);
-
-                // Maximiza janela após criação
-                if (!ConfigurationManager.isHeadless()) {
-                    try {
-                        webDriver.manage().window().maximize();
-                    } catch (Exception e) {
-                        logger.warn("Não foi possível maximizar a janela, usando setSize como alternativa: {}", e.getMessage());
-                        try {
-                            webDriver.manage().window().setSize(new org.openqa.selenium.Dimension(1920, 1080));
-                        } catch (Exception ex) {
-                            logger.warn("Não foi possível definir tamanho da janela: {}", ex.getMessage());
-                        }
-                    }
-                }
                 break;
         }
 
@@ -214,19 +201,9 @@ public class DriverFactory {
     }
 
     /**
-     * Configura timeouts e maximiza janela
+     * Configura timeouts do WebDriver
      */
     private static void configureDriver(WebDriver webDriver) {
-        try {
-            webDriver.manage().window().maximize();
-        } catch (Exception e) {
-            logger.warn("Não foi possível maximizar a janela no configureDriver, usando setSize como alternativa: {}", e.getMessage());
-            try {
-                webDriver.manage().window().setSize(new org.openqa.selenium.Dimension(1920, 1080));
-            } catch (Exception ex) {
-                logger.warn("Não foi possível definir tamanho da janela: {}", ex.getMessage());
-            }
-        }
         webDriver.manage().timeouts()
                 .implicitlyWait(Duration.ofSeconds(ConfigurationManager.getImplicitWait()));
         webDriver.manage().timeouts()
