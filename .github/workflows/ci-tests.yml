@@ -1,0 +1,279 @@
+name: CI/CD - Testes Automatizados
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Executar todos os dias às 6h UTC (3h Brasília)
+    - cron: '0 6 * * *'
+    # Executar toda segunda-feira às 9h UTC (6h Brasília)
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Navegador para executar os testes'
+        required: true
+        default: 'chrome'
+        type: choice
+        options:
+          - chrome
+          - firefox
+          - edge
+      headless:
+        description: 'Executar em modo headless'
+        required: true
+        default: true
+        type: boolean
+      tags:
+        description: 'Tags Cucumber para filtrar testes (ex: @smoke, @critico)'
+        required: false
+        default: '@regressivo'
+
+jobs:
+  test:
+    name: Testes - ${{ matrix.os }} - ${{ matrix.browser }}
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        browser: [chrome, firefox]
+        include:
+          - os: windows-latest
+            browser: edge
+    
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+      
+      - name: ☕ Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+      
+      - name: 🔧 Configurar Chrome
+        if: matrix.browser == 'chrome'
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
+      
+      - name: 🦊 Configurar Firefox
+        if: matrix.browser == 'firefox'
+        uses: browser-actions/setup-firefox@latest
+        with:
+          firefox-version: latest
+      
+      - name: 📦 Instalar dependências
+        run: mvn clean install -DskipTests
+      
+      - name: 🧪 Executar testes
+        run: |
+          mvn clean test \
+            -Dbrowser=${{ github.event.inputs.browser || matrix.browser }} \
+            -Dheadless=${{ github.event.inputs.headless || 'true' }} \
+            -Dcucumber.filter.tags="${{ github.event.inputs.tags || '@regressivo' }}"
+        continue-on-error: true
+      
+      - name: 📊 Gerar relatório Allure
+        if: always()
+        run: mvn allure:report
+      
+      - name: 📤 Upload resultados Allure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.os }}-${{ matrix.browser }}
+          path: target/allure-results/
+          retention-days: 30
+      
+      - name: 📤 Upload relatório Allure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ matrix.os }}-${{ matrix.browser }}
+          path: target/site/allure-maven-plugin/
+          retention-days: 30
+      
+      - name: 📤 Upload screenshots de falhas
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-${{ matrix.os }}-${{ matrix.browser }}
+          path: target/screenshots/
+          retention-days: 7
+      
+      - name: 📊 Publicar resultados dos testes
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Resultados - ${{ matrix.os }} - ${{ matrix.browser }}
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: false
+
+  smoke-tests:
+    name: Smoke Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+      
+      - name: ☕ Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+      
+      - name: 🔧 Configurar Chrome
+        uses: browser-actions/setup-chrome@latest
+      
+      - name: 🧪 Executar smoke tests
+        run: |
+          mvn clean test \
+            -Dbrowser=chrome \
+            -Dheadless=true \
+            -Dcucumber.filter.tags="@smoke"
+      
+      - name: 📊 Gerar relatório
+        if: always()
+        run: mvn allure:report
+      
+      - name: 📤 Upload resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-tests-results
+          path: |
+            target/allure-results/
+            target/cucumber-reports/
+          retention-days: 7
+
+  critical-tests:
+    name: Testes Críticos
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+      
+      - name: ☕ Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+      
+      - name: 🔧 Configurar Chrome
+        uses: browser-actions/setup-chrome@latest
+      
+      - name: 🧪 Executar testes críticos
+        run: |
+          mvn clean test \
+            -Dbrowser=chrome \
+            -Dheadless=true \
+            -Dcucumber.filter.tags="@critico"
+      
+      - name: 📊 Gerar relatório
+        if: always()
+        run: mvn allure:report
+      
+      - name: 📤 Upload resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: critical-tests-results
+          path: target/allure-results/
+          retention-days: 30
+
+  report:
+    name: Consolidar Relatórios
+    needs: [test, smoke-tests, critical-tests]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+      
+      - name: ☕ Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: 📥 Download todos os resultados
+        uses: actions/download-artifact@v4
+        with:
+          path: all-results
+      
+      - name: 📊 Gerar relatório consolidado
+        run: |
+          mkdir -p target/allure-results
+          find all-results -name "*.json" -exec cp {} target/allure-results/ \;
+          mvn allure:report
+      
+      - name: 📤 Upload relatório consolidado
+        uses: actions/upload-artifact@v4
+        with:
+          name: consolidated-allure-report
+          path: target/site/allure-maven-plugin/
+          retention-days: 90
+      
+      - name: 🌐 Publicar relatório Allure
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/site/allure-maven-plugin
+          publish_branch: gh-pages
+          destination_dir: reports/${{ github.run_number }}
+
+  notify:
+    name: Notificações
+    needs: [test, smoke-tests, critical-tests]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: 📧 Slack - Notificar resultado
+        uses: 8398a7/action-slack@v3
+        if: always()
+        continue-on-error: true
+        with:
+          status: ${{ job.status }}
+          text: |
+            Execução de testes concluída!
+            Status: ${{ job.status }}
+            Branch: ${{ github.ref }}
+            Commit: ${{ github.sha }}
+            Autor: ${{ github.actor }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      
+      - name: 📧 Email - Notificar falhas
+        if: failure() && github.event_name == 'schedule'
+        continue-on-error: true
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: '❌ Testes Agendados Falharam - Blog Agi'
+          to: ${{ secrets.EMAIL_TO }}
+          from: GitHub Actions
+          body: |
+            Os testes agendados falharam!
+            
+            Workflow: ${{ github.workflow }}
+            Execução: ${{ github.run_number }}
+            Trigger: ${{ github.event_name }}
+            
+            Veja os detalhes em: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

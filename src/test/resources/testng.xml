@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Blog do Agi - Automação de Testes" verbose="1" parallel="methods" thread-count="3">
+    
+    <parameter name="browser" value="chrome"/>
+    <parameter name="headless" value="false"/>
+    
+    <test name="Testes Regressivos - BDD">
+        <classes>
+            <class name="com.southsystem.runners.TestRunner"/>
+        </classes>
+    </test>
+    
+</suite>

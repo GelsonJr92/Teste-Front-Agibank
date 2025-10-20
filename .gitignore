@@ -1,0 +1,36 @@
+# Arquivos e pastas do Maven
+target/
+*.log
+
+# Arquivos do IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Relatórios e screenshots
+reports/
+screenshots/
+allure-results/
+test-output/
+
+# Arquivos temporários
+*.tmp
+*.bak
+*.swp
+*~
+
+# Logs
+*.log
+logs/
+
+# Arquivos de configuração local (se necessário)
+local.properties
