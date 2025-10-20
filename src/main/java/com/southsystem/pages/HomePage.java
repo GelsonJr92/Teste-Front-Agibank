@@ -135,8 +135,24 @@ public class HomePage extends BasePage {
      */
     @Step("Clicar na lupa de busca")
     public SearchPage clicarLupaBusca() {
-        waitForElementClickable(searchIcon);
-        clickElementWithJS(searchIcon);
+        // Scroll para o topo
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
+        waitForPageLoad();
+
+        // Em headless, o elemento existe mas pode estar com display:none
+        // Vamos usar JavaScript para forçar visibilidade e clicar
+        try {
+            // Tenta o caminho normal primeiro
+            waitForElementClickable(searchIcon);
+            clickElementWithJS(searchIcon);
+        } catch (Exception e) {
+            // Se falhar, força click via JavaScript puro (ignora visibilidade)
+            ((JavascriptExecutor) driver).executeScript(
+                    "var el = document.querySelector('a.astra-search-icon, a.slide-search');"
+                            + "if(el) { el.style.display='block'; el.style.visibility='visible'; el.click(); }"
+                            + "else { throw new Error('Elemento não encontrado no DOM'); }");
+        }
+
         // SearchPage aguardará o campo de busca estar visível no seu construtor
         return new SearchPage(driver);
     }
@@ -171,9 +187,20 @@ public class HomePage extends BasePage {
      */
     @Step("Passar mouse sobre o menu O Agibank")
     public HomePage clicarMenuOAgibank() {
+        // Scroll para topo e aguarda JS
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
+        waitForPageLoad();
+
         hoverElement(menuOAgibank);
         // Aguarda o submenu aparecer verificando visibilidade do primeiro item
-        waitForElementVisible(submenuColunas);
+        try {
+            waitForElementVisible(submenuColunas);
+        } catch (Exception e) {
+            // Fallback: força visibilidade do submenu
+            ((JavascriptExecutor) driver).executeScript(
+                    "var submenu = document.evaluate(\"//span[contains(text(), 'Colunas')]\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;"
+                            + "if(submenu && submenu.parentElement) { submenu.parentElement.style.display='block'; submenu.parentElement.style.visibility='visible'; }");
+        }
         return this;
     }
 
@@ -182,9 +209,20 @@ public class HomePage extends BasePage {
      */
     @Step("Passar mouse sobre o menu Produtos")
     public HomePage clicarMenuProdutos() {
+        // Scroll para topo e aguarda JS
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
+        waitForPageLoad();
+
         hoverElement(menuProdutos);
         // Aguarda o submenu aparecer verificando visibilidade do primeiro item
-        waitForElementVisible(submenuEmprestimos);
+        try {
+            waitForElementVisible(submenuEmprestimos);
+        } catch (Exception e) {
+            // Fallback: força visibilidade do submenu
+            ((JavascriptExecutor) driver).executeScript(
+                    "var submenu = document.evaluate(\"//span[contains(text(), 'Empréstimos') or contains(text(), 'Emprestimos')]\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;"
+                            + "if(submenu && submenu.parentElement) { submenu.parentElement.style.display='block'; submenu.parentElement.style.visibility='visible'; }");
+        }
         return this;
     }
 

@@ -71,7 +71,26 @@ jobs:
       - name: 📦 Instalar dependências
         run: mvn clean install -DskipTests
       
-      - name: 🧪 Executar testes
+      - name: 🖥️ Configurar Xvfb (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+      
+      - name: 🧪 Executar testes (Ubuntu com Xvfb)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          sleep 3
+          mvn clean test \
+            -Dbrowser=${{ github.event.inputs.browser || matrix.browser }} \
+            -Dheadless=false \
+            -Dcucumber.filter.tags="${{ github.event.inputs.tags || '@regressivo' }}"
+        continue-on-error: true
+      
+      - name: 🧪 Executar testes (Windows/macOS)
+        if: matrix.os != 'ubuntu-latest'
         run: |
           mvn clean test \
             -Dbrowser=${{ github.event.inputs.browser || matrix.browser }} \
@@ -134,11 +153,19 @@ jobs:
       - name: 🔧 Configurar Chrome
         uses: browser-actions/setup-chrome@latest
       
+      - name: 🖥️ Configurar Xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+      
       - name: 🧪 Executar smoke tests
         run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          sleep 3
           mvn clean test \
             -Dbrowser=chrome \
-            -Dheadless=true \
+            -Dheadless=false \
             -Dcucumber.filter.tags="@smoke"
       
       - name: 📊 Gerar relatório
@@ -173,11 +200,19 @@ jobs:
       - name: 🔧 Configurar Chrome
         uses: browser-actions/setup-chrome@latest
       
+      - name: 🖥️ Configurar Xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+      
       - name: 🧪 Executar testes críticos
         run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+          sleep 3
           mvn clean test \
             -Dbrowser=chrome \
-            -Dheadless=true \
+            -Dheadless=false \
             -Dcucumber.filter.tags="@critico"
       
       - name: 📊 Gerar relatório

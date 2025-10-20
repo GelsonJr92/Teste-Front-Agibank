@@ -95,6 +95,8 @@ public class DriverFactory {
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 if (ConfigurationManager.isHeadless()) {
                     firefoxOptions.addArguments("--headless");
+                    firefoxOptions.addArguments("--width=1920");
+                    firefoxOptions.addArguments("--height=1080");
                 }
                 webDriver = new FirefoxDriver(firefoxOptions);
                 break;
@@ -103,7 +105,8 @@ public class DriverFactory {
                 WebDriverManager.edgedriver().setup();
                 EdgeOptions edgeOptions = new EdgeOptions();
                 if (ConfigurationManager.isHeadless()) {
-                    edgeOptions.addArguments("--headless");
+                    edgeOptions.addArguments("--headless=new");
+                    edgeOptions.addArguments("--window-size=1920,1080");
                 }
                 webDriver = new EdgeDriver(edgeOptions);
                 break;
@@ -118,9 +121,21 @@ public class DriverFactory {
 
                 if (ConfigurationManager.isHeadless()) {
                     chromeOptions.addArguments("--headless=new");
+                    chromeOptions.addArguments("--window-size=1920,1080");
+                    chromeOptions.addArguments("--disable-gpu");
+                    chromeOptions.addArguments("--disable-software-rasterizer");
+                    chromeOptions.addArguments("--disable-extensions");
+                    // User-Agent para evitar detecção de headless
+                    chromeOptions.addArguments(
+                            "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36");
                 }
 
                 webDriver = new ChromeDriver(chromeOptions);
+
+                // Maximiza janela após criação
+                if (!ConfigurationManager.isHeadless()) {
+                    webDriver.manage().window().maximize();
+                }
                 break;
         }
 
@@ -141,6 +156,8 @@ public class DriverFactory {
                     FirefoxOptions firefoxOptions = new FirefoxOptions();
                     if (ConfigurationManager.isHeadless()) {
                         firefoxOptions.addArguments("--headless");
+                        firefoxOptions.addArguments("--width=1920");
+                        firefoxOptions.addArguments("--height=1080");
                     }
                     firefoxOptions.setCapability("se:recordVideo", true);
                     firefoxOptions.setCapability("se:screenResolution", "1920x1080");
@@ -151,7 +168,8 @@ public class DriverFactory {
                 case "edge":
                     EdgeOptions edgeOptions = new EdgeOptions();
                     if (ConfigurationManager.isHeadless()) {
-                        edgeOptions.addArguments("--headless");
+                        edgeOptions.addArguments("--headless=new");
+                        edgeOptions.addArguments("--window-size=1920,1080");
                     }
                     edgeOptions.setCapability("se:recordVideo", true);
                     edgeOptions.setCapability("se:screenResolution", "1920x1080");

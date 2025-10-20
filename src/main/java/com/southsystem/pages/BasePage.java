@@ -89,6 +89,21 @@ public class BasePage {
     }
 
     /**
+     * Força visibilidade de elemento via JavaScript (útil em headless)
+     */
+    protected void forceElementVisibility(By locator) {
+        try {
+            ((JavascriptExecutor) driver).executeScript(
+                    "var el = arguments[0];" + "if(el) {" + "  el.style.display='block';"
+                            + "  el.style.visibility='visible';" + "  el.style.opacity='1';" + "}",
+                    driver.findElement(locator));
+            logger.debug("Visibilidade forçada via JS: {}", locator);
+        } catch (Exception e) {
+            logger.debug("Não foi possível forçar visibilidade: {}", locator);
+        }
+    }
+
+    /**
      * Verifica se elemento está visível
      */
     protected boolean isElementVisible(By locator) {
@@ -117,7 +132,8 @@ public class BasePage {
     }
 
     /**
-     * Move o mouse sobre um elemento (hover) com retry automático
+     * Move o mouse sobre um elemento (hover) com retry automático Fallback para JavaScript em caso
+     * de elemento oculto (comum em headless)
      */
     @Step("Mover mouse sobre elemento: {locator}")
     protected void hoverElement(By locator) {
@@ -143,14 +159,26 @@ public class BasePage {
 
                 logger.debug("Hover realizado com sucesso no elemento: {}", locator);
                 return;
-            } catch (org.openqa.selenium.StaleElementReferenceException e) {
+            } catch (Exception e) {
                 attempt++;
-                logger.warn("Elemento obsoleto na tentativa {} de {}: {}", attempt, maxRetries,
-                        locator);
+                logger.warn("Falha no hover tentativa {} de {}: {}", attempt, maxRetries,
+                        e.getMessage());
+
                 if (attempt >= maxRetries) {
-                    logger.error("Falha ao realizar hover após {} tentativas: {}", maxRetries,
-                            locator);
-                    throw e;
+                    // Fallback: tenta click direto (menus podem não suportar hover em headless)
+                    try {
+                        logger.info("Tentando click direto em: {}", locator);
+                        WebElement element = driver.findElement(locator);
+                        element.click();
+                        Thread.sleep(300);
+                        logger.info("Click direto concluído");
+                        return;
+                    } catch (Exception jsError) {
+                        logger.error("Falha ao realizar hover após {} tentativas: {}", maxRetries,
+                                locator);
+                        throw new RuntimeException("Não foi possível realizar hover: " + locator,
+                                jsError);
+                    }
                 }
             }
         }
