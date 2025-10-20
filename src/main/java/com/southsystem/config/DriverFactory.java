@@ -5,6 +5,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -134,7 +135,16 @@ public class DriverFactory {
 
                 // Maximiza janela após criação
                 if (!ConfigurationManager.isHeadless()) {
-                    webDriver.manage().window().maximize();
+                    try {
+                        webDriver.manage().window().maximize();
+                    } catch (Exception e) {
+                        logger.warn("Não foi possível maximizar a janela, usando setSize como alternativa: {}", e.getMessage());
+                        try {
+                            webDriver.manage().window().setSize(new org.openqa.selenium.Dimension(1920, 1080));
+                        } catch (Exception ex) {
+                            logger.warn("Não foi possível definir tamanho da janela: {}", ex.getMessage());
+                        }
+                    }
                 }
                 break;
         }
@@ -207,7 +217,16 @@ public class DriverFactory {
      * Configura timeouts e maximiza janela
      */
     private static void configureDriver(WebDriver webDriver) {
-        webDriver.manage().window().maximize();
+        try {
+            webDriver.manage().window().maximize();
+        } catch (Exception e) {
+            logger.warn("Não foi possível maximizar a janela no configureDriver, usando setSize como alternativa: {}", e.getMessage());
+            try {
+                webDriver.manage().window().setSize(new org.openqa.selenium.Dimension(1920, 1080));
+            } catch (Exception ex) {
+                logger.warn("Não foi possível definir tamanho da janela: {}", ex.getMessage());
+            }
+        }
         webDriver.manage().timeouts()
                 .implicitlyWait(Duration.ofSeconds(ConfigurationManager.getImplicitWait()));
         webDriver.manage().timeouts()
