@@ -1,0 +1,34 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Sat Nov 22 06:08:20 UTC 2025","Sat Nov 22 06:08:35 UTC 2025","15260","","Busca de artigos no Blog do Agi","","Validar ícone de busca está presente","","Validar ícone de busca está presente","  Como um usuário do Blog do Agi
+  Eu quero poder buscar por artigos
+  Para encontrar conteúdo relevante sobre os temas de meu interesse"
+"passed","Sat Nov 22 06:09:19 UTC 2025","Sat Nov 22 06:09:27 UTC 2025","7616","","Navegação no Blog do Agi","","Validar submenus do menu ""O Agibank""","","Validar submenus do menu ""O Agibank""","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Nov 22 06:10:27 UTC 2025","Sat Nov 22 06:10:31 UTC 2025","3374","","Navegação no Blog do Agi","","Validar redes sociais no rodapé","","Validar redes sociais no rodapé","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Nov 22 06:08:40 UTC 2025","Sat Nov 22 06:08:48 UTC 2025","7545","","Navegação no Blog do Agi","","Acesso à página inicial","","Acesso à página inicial","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Nov 22 06:09:32 UTC 2025","Sat Nov 22 06:09:39 UTC 2025","7743","","Navegação no Blog do Agi","","Validar submenus do menu ""Produtos""","","Validar submenus do menu ""Produtos""","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Nov 22 06:09:44 UTC 2025","Sat Nov 22 06:09:52 UTC 2025","7933","","Navegação no Blog do Agi","","Validar submenus de segundo nível em ""Empréstimos""","","Validar submenus de segundo nível em ""Empréstimos""","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Nov 22 06:11:00 UTC 2025","Sat Nov 22 06:11:09 UTC 2025","9703","","Navegação no Blog do Agi","","Verificar responsividade em diferentes resoluções","","Verificar responsividade em diferentes resoluções","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Nov 22 06:10:45 UTC 2025","Sat Nov 22 06:10:55 UTC 2025","9500","","Navegação no Blog do Agi","","Verificar responsividade em diferentes resoluções","","Verificar responsividade em diferentes resoluções","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Nov 22 06:10:31 UTC 2025","Sat Nov 22 06:10:40 UTC 2025","9540","","Navegação no Blog do Agi","","Verificar responsividade em diferentes resoluções","","Verificar responsividade em diferentes resoluções","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Nov 22 06:08:53 UTC 2025","Sat Nov 22 06:09:02 UTC 2025","9764","","Navegação no Blog do Agi","","Presença do ícone de busca","","Presença do ícone de busca","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Nov 22 06:09:07 UTC 2025","Sat Nov 22 06:09:14 UTC 2025","6544","","Navegação no Blog do Agi","","Validar presença de todos os menus principais","","Validar presença de todos os menus principais","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
