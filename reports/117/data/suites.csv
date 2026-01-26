@@ -1,0 +1,34 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Mon Jan 26 09:08:49 UTC 2026","Mon Jan 26 09:09:18 UTC 2026","29461","","Busca de artigos no Blog do Agi","","Validar ícone de busca está presente","","Validar ícone de busca está presente","  Como um usuário do Blog do Agi
+  Eu quero poder buscar por artigos
+  Para encontrar conteúdo relevante sobre os temas de meu interesse"
+"passed","Mon Jan 26 09:12:13 UTC 2026","Mon Jan 26 09:12:27 UTC 2026","13743","","Navegação no Blog do Agi","","Verificar responsividade em diferentes resoluções","","Verificar responsividade em diferentes resoluções","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Mon Jan 26 09:09:33 UTC 2026","Mon Jan 26 09:09:38 UTC 2026","5241","","Navegação no Blog do Agi","","Validar presença de todos os menus principais","","Validar presença de todos os menus principais","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Mon Jan 26 09:09:46 UTC 2026","Mon Jan 26 09:09:54 UTC 2026","7783","","Navegação no Blog do Agi","","Validar submenus do menu ""Produtos""","","Validar submenus do menu ""Produtos""","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Mon Jan 26 09:11:22 UTC 2026","Mon Jan 26 09:11:31 UTC 2026","8359","","Navegação no Blog do Agi","","Validar redes sociais no rodapé","","Validar redes sociais no rodapé","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Mon Jan 26 09:09:38 UTC 2026","Mon Jan 26 09:09:44 UTC 2026","6438","","Navegação no Blog do Agi","","Validar submenus do menu ""O Agibank""","","Validar submenus do menu ""O Agibank""","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Mon Jan 26 09:09:18 UTC 2026","Mon Jan 26 09:09:25 UTC 2026","6155","","Navegação no Blog do Agi","","Acesso à página inicial","","Acesso à página inicial","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Mon Jan 26 09:11:54 UTC 2026","Mon Jan 26 09:12:08 UTC 2026","13649","","Navegação no Blog do Agi","","Verificar responsividade em diferentes resoluções","","Verificar responsividade em diferentes resoluções","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Mon Jan 26 09:09:25 UTC 2026","Mon Jan 26 09:09:33 UTC 2026","8013","","Navegação no Blog do Agi","","Presença do ícone de busca","","Presença do ícone de busca","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"failed","Mon Jan 26 09:09:59 UTC 2026","Mon Jan 26 09:10:31 UTC 2026","31451","","Navegação no Blog do Agi","","Validar submenus de segundo nível em ""Empréstimos""","","Validar submenus de segundo nível em ""Empréstimos""","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Mon Jan 26 09:11:36 UTC 2026","Mon Jan 26 09:11:49 UTC 2026","13632","","Navegação no Blog do Agi","","Verificar responsividade em diferentes resoluções","","Verificar responsividade em diferentes resoluções","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
