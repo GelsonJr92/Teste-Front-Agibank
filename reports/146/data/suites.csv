@@ -1,0 +1,34 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Sat Feb 21 06:19:46 UTC 2026","Sat Feb 21 06:19:59 UTC 2026","13926","","Navegação no Blog do Agi","","Verificar responsividade em diferentes resoluções","","Verificar responsividade em diferentes resoluções","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Feb 21 06:17:22 UTC 2026","Sat Feb 21 06:17:34 UTC 2026","11735","","Navegação no Blog do Agi","","Presença do ícone de busca","","Presença do ícone de busca","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Feb 21 06:17:51 UTC 2026","Sat Feb 21 06:18:00 UTC 2026","8654","","Navegação no Blog do Agi","","Validar submenus do menu ""O Agibank""","","Validar submenus do menu ""O Agibank""","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"failed","Sat Feb 21 06:18:19 UTC 2026","Sat Feb 21 06:18:51 UTC 2026","31453","","Navegação no Blog do Agi","","Validar submenus de segundo nível em ""Empréstimos""","","Validar submenus de segundo nível em ""Empréstimos""","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Feb 21 06:18:56 UTC 2026","Sat Feb 21 06:19:03 UTC 2026","7452","","Navegação no Blog do Agi","","Validar redes sociais no rodapé","","Validar redes sociais no rodapé","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Feb 21 06:18:05 UTC 2026","Sat Feb 21 06:18:14 UTC 2026","9227","","Navegação no Blog do Agi","","Validar submenus do menu ""Produtos""","","Validar submenus do menu ""Produtos""","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Feb 21 06:17:18 UTC 2026","Sat Feb 21 06:17:22 UTC 2026","3892","","Navegação no Blog do Agi","","Acesso à página inicial","","Acesso à página inicial","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Feb 21 06:19:27 UTC 2026","Sat Feb 21 06:19:41 UTC 2026","13494","","Navegação no Blog do Agi","","Verificar responsividade em diferentes resoluções","","Verificar responsividade em diferentes resoluções","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Feb 21 06:17:39 UTC 2026","Sat Feb 21 06:17:46 UTC 2026","7723","","Navegação no Blog do Agi","","Validar presença de todos os menus principais","","Validar presença de todos os menus principais","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Feb 21 06:19:08 UTC 2026","Sat Feb 21 06:19:22 UTC 2026","13667","","Navegação no Blog do Agi","","Verificar responsividade em diferentes resoluções","","Verificar responsividade em diferentes resoluções","                  Como um usuário do Blog do Agi
+                  Eu quero poder navegar pela aplicação
+                  Para acessar o conteúdo disponível"
+"passed","Sat Feb 21 06:16:56 UTC 2026","Sat Feb 21 06:17:18 UTC 2026","22374","","Busca de artigos no Blog do Agi","","Validar ícone de busca está presente","","Validar ícone de busca está presente","  Como um usuário do Blog do Agi
+  Eu quero poder buscar por artigos
+  Para encontrar conteúdo relevante sobre os temas de meu interesse"
