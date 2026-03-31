@@ -103,32 +103,20 @@ jobs:
             -Dcucumber.filter.tags="${{ github.event.inputs.tags || '@regressivo' }}"
         continue-on-error: true
       
-      - name: 📊 Gerar relatório Allure
-        if: always()
-        run: mvn allure:report
-      
-      - name: � Verificar arquivos de teste
+      - name: 📊 Verificar relatório ExtentReports
         if: always()
         shell: bash
         run: |
-          echo "Verificando diretório surefire-reports..."
-          ls -la target/surefire-reports/ || echo "Diretório não encontrado"
-          find target -name "*.xml" -type f || echo "Nenhum XML encontrado"
+          echo "Verificando relatórios gerados..."
+          ls -la target/extent-reports/ || echo "Diretório extent-reports não encontrado"
+          ls -la target/cucumber-reports/ || echo "Diretório cucumber-reports não encontrado"
       
-      - name: �📤 Upload resultados Allure
+      - name: 📤 Upload relatório ExtentReports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-results-${{ matrix.os }}-${{ matrix.browser }}
-          path: target/allure-results/
-          retention-days: 30
-      
-      - name: 📤 Upload relatório Allure
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report-${{ matrix.os }}-${{ matrix.browser }}
-          path: target/site/allure-maven-plugin/
+          name: extent-report-${{ matrix.os }}-${{ matrix.browser }}
+          path: target/extent-reports/
           retention-days: 30
       
       - name: 📤 Upload screenshots de falhas
@@ -172,17 +160,17 @@ jobs:
             -Dheadless=false \
             -Dcucumber.filter.tags="@smoke"
       
-      - name: 📊 Gerar relatório
+      - name: 📊 Verificar relatório gerado
         if: always()
-        run: mvn allure:report
+        run: ls -la target/extent-reports/ || echo "Relatório não encontrado"
       
-      - name: 📤 Upload resultados
+      - name: 📤 Upload resultados smoke
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: smoke-tests-results
           path: |
-            target/allure-results/
+            target/extent-reports/
             target/cucumber-reports/
           retention-days: 7
 
@@ -219,16 +207,16 @@ jobs:
             -Dheadless=false \
             -Dcucumber.filter.tags="@critico"
       
-      - name: 📊 Gerar relatório
+      - name: 📊 Verificar relatório gerado
         if: always()
-        run: mvn allure:report
+        run: ls -la target/extent-reports/ || echo "Relatório não encontrado"
       
-      - name: 📤 Upload resultados
+      - name: 📤 Upload resultados críticos
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: critical-tests-results
-          path: target/allure-results/
+          path: target/extent-reports/
           retention-days: 30
 
   report:
@@ -252,25 +240,24 @@ jobs:
         with:
           path: all-results
       
-      - name: 📊 Gerar relatório consolidado
+      - name: 📊 Gerar relatório consolidado ExtentReports
         run: |
-          mkdir -p target/allure-results
-          find all-results -name "*.json" -exec cp {} target/allure-results/ \;
-          mvn allure:report
+          echo "Relatórios individuais disponíveis em all-results/"
+          ls -la all-results/ || echo "Nenhum resultado baixado"
       
       - name: 📤 Upload relatório consolidado
         uses: actions/upload-artifact@v4
         with:
-          name: consolidated-allure-report
-          path: target/site/allure-maven-plugin/
+          name: consolidated-extent-report
+          path: all-results/
           retention-days: 90
       
-      - name: 🌐 Publicar relatório Allure
+      - name: 🌐 Publicar relatório
         uses: peaceiris/actions-gh-pages@v3
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target/site/allure-maven-plugin
+          publish_dir: all-results
           publish_branch: gh-pages
           destination_dir: reports/${{ github.run_number }}
 

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.southsystem</groupId>
+    <groupId>com.agibank</groupId>
     <artifactId>blog-agi-automation-tests</artifactId>
     <version>1.0.0</version>
     <name>Blog do Agi - Web Automation Tests</name>
@@ -15,15 +15,16 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <selenium.version>4.27.0</selenium.version>
-        <testng.version>7.10.2</testng.version>
         <cucumber.version>7.20.1</cucumber.version>
+        <junit.version>5.11.3</junit.version>
+        <junit.platform.version>1.11.3</junit.platform.version>
         <webdrivermanager.version>5.9.2</webdrivermanager.version>
-        <allure.version>2.29.0</allure.version>
-        <aspectj.version>1.9.22.1</aspectj.version>
+        <extentreports.version>5.1.2</extentreports.version>
+        <extentreports.cucumber.version>1.14.0</extentreports.cucumber.version>
+        <lombok.version>1.18.36</lombok.version>
         <slf4j.version>2.0.16</slf4j.version>
         <maven.surefire.version>3.5.2</maven.surefire.version>
         <maven.compiler.version>3.13.0</maven.compiler.version>
-        <allure.maven.version>2.12.0</allure.maven.version>
     </properties>
 
     <dependencies>
@@ -41,40 +42,60 @@
             <version>${webdrivermanager.version}</version>
         </dependency>
 
-        <!-- TestNG - Framework de testes -->
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-            <scope>test</scope>
-        </dependency>
-
         <!-- Cucumber Java -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
             <version>${cucumber.version}</version>
+            <scope>test</scope>
         </dependency>
 
-        <!-- Cucumber TestNG -->
+        <!-- Cucumber JUnit 5 Platform Engine -->
         <dependency>
             <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-testng</artifactId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
             <version>${cucumber.version}</version>
+            <scope>test</scope>
         </dependency>
 
-        <!-- Allure Cucumber7 -->
+        <!-- JUnit 5 -->
         <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-cucumber7-jvm</artifactId>
-            <version>${allure.version}</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
 
-        <!-- Allure TestNG -->
+        <!-- JUnit Platform Suite (runner com @Suite) -->
         <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-testng</artifactId>
-            <version>${allure.version}</version>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>${junit.platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ExtentReports -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extentreports.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ExtentReports Cucumber 7 Adapter -->
+        <dependency>
+            <groupId>tech.grasshopper</groupId>
+            <artifactId>extentreports-cucumber7-adapter</artifactId>
+            <version>${extentreports.cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- SLF4J - Logging -->
@@ -84,11 +105,12 @@
             <version>${slf4j.version}</version>
         </dependency>
 
-        <!-- Commons Lang3 - Utilitários -->
+        <!-- Cucumber PicoContainer - Injeção de dependência entre Steps -->
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.17.0</version>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-picocontainer</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -102,42 +124,25 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
 
-            <!-- Maven Surefire Plugin - Execução dos testes -->
+            <!-- Maven Surefire Plugin - Execução dos testes via JUnit 5 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
                 <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                    <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
-                    </argLine>
-                    <systemPropertyVariables>
-                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
-                    </systemPropertyVariables>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.aspectj</groupId>
-                        <artifactId>aspectjweaver</artifactId>
-                        <version>${aspectj.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
-            <!-- Allure Maven Plugin - Geração de relatórios -->
-            <plugin>
-                <groupId>io.qameta.allure</groupId>
-                <artifactId>allure-maven</artifactId>
-                <version>${allure.maven.version}</version>
-                <configuration>
-                    <reportVersion>${allure.version}</reportVersion>
-                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+                    <includes>
+                        <include>**/*Runner.java</include>
+                    </includes>
                 </configuration>
             </plugin>
         </plugins>

@@ -2,14 +2,14 @@
 
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://openjdk.java.net/projects/jdk/17/)
 [![Selenium](https://img.shields.io/badge/Selenium-4.27.0-green.svg)](https://selenium.dev/)
-[![TestNG](https://img.shields.io/badge/TestNG-7.10.2-blue.svg)](https://testng.org/doc/)
+[![JUnit](https://img.shields.io/badge/JUnit-5.11.3-blue.svg)](https://junit.org/junit5/)
 [![Cucumber](https://img.shields.io/badge/Cucumber-7.20.1-brightgreen.svg)](https://cucumber.io/)
-[![Allure](https://img.shields.io/badge/Allure-2.29.0-yellow.svg)](https://docs.qameta.io/allure/)
+[![ExtentReports](https://img.shields.io/badge/ExtentReports-5.1.2-orange.svg)](https://www.extentreports.com/)
 [![SLF4J](https://img.shields.io/badge/SLF4J-2.0.16-blue.svg)](http://www.slf4j.org/)
 
 ## 📋 Descrição do Projeto
 
-Este projeto contém a automação de testes Web para o **Blog do Agi** (https://blog.agibank.com.br/), focando especialmente na funcionalidade de busca de artigos. Foi desenvolvido como parte de um teste técnico de QA, implementando os cenários mais relevantes para automação da pesquisa de artigos utilizando a lupa no canto superior direito do site.
+Este projeto contém a automação de testes Web para o **Blog do Agi** (https://blogdoagi.com.br/), focando especialmente na funcionalidade de busca de artigos. Foi desenvolvido como parte de um teste técnico de QA, implementando os cenários mais relevantes para automação da pesquisa de artigos utilizando a lupa no canto superior direito do site.
 
 ## 🎯 Cenários de Teste Implementados
 
@@ -31,45 +31,50 @@ Este projeto contém a automação de testes Web para o **Blog do Agi** (https:/
 
 ```
 src/
-├── main/java/com/southsystem/
+├── main/java/com/agibank/
 │   ├── config/
 │   │   ├── ConfigurationManager.java    # Gerenciamento de configurações
 │   │   └── DriverFactory.java          # Factory para WebDriver
 │   └── pages/
 │       ├── BasePage.java               # Classe base para Page Objects
 │       ├── HomePage.java               # Page Object da página inicial
-│       └── SearchPage.java             # Page Object da página de busca
+│       ├── SearchPage.java             # Page Object da página de busca
+│       ├── SearchResultPage.java       # Page Object da página de resultados
+│       └── ResponsividadePage.java     # Page Object de responsividade
 │
 └── test/
-    ├── java/com/southsystem/
-    │   ├── tests/
-    │   │   ├── BaseTest.java           # Classe base para testes
-    │   │   ├── SearchTest.java         # Testes da funcionalidade de busca
-    │   │   └── NavigationTest.java     # Testes de navegação
+    ├── java/com/agibank/
+    │   ├── context/
+    │   │   └── ScenarioContext.java    # Contexto compartilhado entre steps
+    │   ├── hooks/
+    │   │   └── Hooks.java              # Hooks do Cucumber (before/after)
     │   ├── steps/
     │   │   ├── BuscaSteps.java         # Steps para Cucumber (Busca)
+    │   │   ├── CommonSteps.java        # Steps comuns compartilhados
     │   │   └── NavegacaoSteps.java     # Steps para Cucumber (Navegação)
     │   └── runners/
-    │       ├── BuscaTestRunner.java    # Runner específico para busca
-    │       └── AllTestsRunner.java     # Runner para todos os testes
+    │       └── TestRunner.java         # Runner JUnit 5 para todos os testes
     │
     └── resources/
         ├── features/
         │   ├── busca.feature           # Cenários BDD para busca
         │   └── navegacao.feature       # Cenários BDD para navegação
         ├── config.properties           # Configurações do projeto
-        └── testng.xml                  # Configuração do TestNG
+        ├── extent.properties           # Configurações do ExtentReports
+        └── junit-platform.properties   # Configurações do JUnit Platform
 ```
 
 ## 🛠️ Tecnologias Utilizadas
 
 - **Java 17** - Linguagem de programação
 - **Selenium WebDriver 4.27.0** - Automação web
-- **TestNG 7.10.2** - Framework de testes
+- **JUnit 5.11.3** - Framework de testes
 - **Cucumber 7.20.1** - BDD (Behavior Driven Development)
 - **WebDriverManager 5.9.2** - Gerenciamento automático de drivers
-- **Allure 2.29.0** - Relatórios de teste
+- **ExtentReports 5.1.2** - Relatórios de teste
 - **SLF4J 2.0.16** - Logging profissional
+- **Lombok 1.18.36** - Redução de código boilerplate
+- **PicoContainer** - Injeção de dependências entre steps
 - **Maven 3.9+** - Gerenciamento de dependências
 - **Page Object Pattern** - Padrão de design para organização do código
 - **Selenium Grid 4.27.0** - Distribuição de testes em múltiplas máquinas
@@ -123,21 +128,12 @@ mvn clean test
 
 ### 🔍 Executar apenas os testes de Busca
 ```bash
-mvn clean test -Dtest=SearchTest
+mvn clean test -Dcucumber.filter.tags="@critico"
 ```
 
-### 🧭 Executar apenas os testes de Navegação
+### 🦭 Executar apenas os testes de Responsividade
 ```bash
-mvn clean test -Dtest=NavigationTest
-```
-
-### 🥒 Executar com Cucumber (BDD)
-```bash
-# Todos os testes BDD
-mvn clean test -Dtest=AllTestsRunner
-
-# Apenas testes de busca BDD
-mvn clean test -Dtest=BuscaTestRunner
+mvn clean test -Dcucumber.filter.tags="@responsividade"
 ```
 
 ### ⚙️ Execução com Parâmetros Personalizados
@@ -157,38 +153,28 @@ mvn clean test -Dheadless=true
 #### Executar testes específicos por tags (Cucumber)
 ```bash
 # Apenas testes críticos
-mvn clean test -Dtest=AllTestsRunner -Dcucumber.filter.tags="@critico"
+mvn clean test -Dcucumber.filter.tags="@critico"
 
 # Apenas testes de smoke
-mvn clean test -Dtest=AllTestsRunner -Dcucumber.filter.tags="@smoke"
+mvn clean test -Dcucumber.filter.tags="@smoke"
 
 # Excluir testes negativos
-mvn clean test -Dtest=AllTestsRunner -Dcucumber.filter.tags="not @negativo"
+mvn clean test -Dcucumber.filter.tags="not @negativo"
 ```
 
 ## 📊 Relatórios
 
-### 📋 Relatório TestNG
-Após a execução, o relatório HTML estará disponível em:
+### 🎨 Relatório ExtentReports
+Após a execução, o relatório HTML é gerado automaticamente em:
 ```
-target/surefire-reports/index.html
+target/extent-reports/
 ```
-
-### 🎨 Relatório Allure
-```bash
-# Gerar relatório Allure
-mvn allure:report
-
-# Abrir relatório no navegador
-mvn allure:serve
-```
-O relatório ficará disponível em: `target/site/allure-maven-plugin/index.html`
+Abra o arquivo `index.html` em qualquer navegador para visualizar o relatório detalhado dos testes.
 
 ### 🥒 Relatório Cucumber
 Relatórios HTML do Cucumber estarão em:
 ```
-target/cucumber-reports/all/index.html     # Todos os testes
-target/cucumber-reports/busca/index.html   # Apenas testes de busca
+target/cucumber-reports/
 ```
 
 ## ⚙️ Configurações
@@ -198,16 +184,16 @@ Localize e edite: `src/test/resources/config.properties`
 
 ```properties
 # URL da aplicação
-base.url=https://blog.agibank.com.br/
+base.url=https://blogdoagi.com.br/
 
 # Configurações do navegador
 browser=chrome
 headless=false
 
 # Timeouts (em segundos)
-implicit.wait=10
-explicit.wait=15
-page.load.timeout=30
+implicit.wait=5
+explicit.wait=20
+page.load.timeout=60
 ```
 
 ### 🎛️ Configurações via Linha de Comando
@@ -230,7 +216,7 @@ page.load.timeout=45
 ```
 
 ### ❌ Problema: Site fora do ar ou alterações na interface
-**Solução:** Verifique se https://blog.agibank.com.br/ está acessível. Os locators podem precisar ser atualizados se houve mudanças na interface.
+**Solução:** Verifique se https://blogdoagi.com.br/ está acessível. Os locators podem precisar ser atualizados se houve mudanças na interface.
 
 ### ❌ Problema: Falha na execução em modo headless
 **Solução:** Execute primeiro sem headless para depuração:
@@ -283,7 +269,7 @@ Workflow automatizado que executa em push, PR, agendamento e manual.
 - Matrix: Ubuntu/Windows/macOS × Chrome/Firefox/Edge (7 combinações)
 - Smoke tests (@smoke)
 - Critical tests (@critico)
-- Consolidação de relatórios Allure + GitHub Pages
+- Geração e publicação de relatórios ExtentReports
 - Notificações Slack/Email
 
 **Configurar secrets (opcional):**
@@ -294,9 +280,9 @@ EMAIL_PASSWORD    - App password do Gmail
 EMAIL_TO          - Destinatário dos alertas
 ```
 
-**GitHub Pages:**
-Settings → Pages → Branch: `gh-pages`
-URL: `https://{usuario}.github.io/{repo}/reports/{run-number}/`
+**Relatórios de Execução:**
+Os relatórios ExtentReports são disponibilizados como artefatos do workflow.
+Acesse em: Actions → Workflow run → Artifacts → `extent-reports-{os}-{browser}`
 
 ## 📝 Estrutura dos Testes
 
@@ -341,4 +327,3 @@ Em caso de dúvidas ou problemas:
 
 ---
 
-**Desenvolvido com ❤️ para o teste técnico QA - South System**
