@@ -2,9 +2,6 @@ package com.agibank.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
-import java.util.List;
 
 /**
  * Page Object para a página de resultados de busca
