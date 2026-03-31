@@ -3,15 +3,14 @@ package com.agibank.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Gerenciador de configurações do projeto
  */
+@Slf4j
 public class ConfigurationManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConfigurationManager.class);
     private static Properties properties = new Properties();
 
     static {
@@ -27,7 +26,7 @@ public class ConfigurationManager {
                 properties.load(input);
             }
         } catch (IOException e) {
-            logger.error("Erro ao carregar config.properties: {}", e.getMessage());
+            log.error("Erro ao carregar config.properties: {}", e.getMessage());
         }
     }
 

@@ -7,12 +7,14 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 /**
  * Page Object para a funcionalidade de busca do Blog do Agi
  */
+@Slf4j
 public class SearchPage extends BasePage {
 
     // Locators
@@ -39,7 +41,7 @@ public class SearchPage extends BasePage {
         try {
             waitForElementVisible(searchInput);
         } catch (TimeoutException e) {
-            logger.warn("Campo de busca não visível — aplicando visibilidade via JS nos ancestrais");
+            log.warn("Campo de busca não visível — aplicando visibilidade via JS nos ancestrais");
             List<WebElement> inputs = driver.findElements(searchInput);
             if (!inputs.isEmpty()) {
                 ((JavascriptExecutor) driver).executeScript(
@@ -70,7 +72,7 @@ public class SearchPage extends BasePage {
                 try {
                     waitForElementVisible(searchInput);
                 } catch (TimeoutException e2) {
-                    logger.error("Campo de busca permanece não visível mesmo após forçar ancestrais via JS");
+                    log.error("Campo de busca permanece não visível mesmo após forçar ancestrais via JS");
                     throw new RuntimeException(
                             "Campo de busca não ficou visível após forçar CSS nos ancestrais");
                 }

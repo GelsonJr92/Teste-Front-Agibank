@@ -8,15 +8,14 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import com.agibank.config.DriverFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Hooks centralizados para gerenciar o ciclo de vida do WebDriver por cenário.
  */
+@Slf4j
 public class Hooks {
 
-    private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
     private final ScenarioContext context;
 
     public Hooks(ScenarioContext context) {
@@ -25,9 +24,9 @@ public class Hooks {
 
     @Before(order = 0)
     public void setUp(Scenario scenario) {
-        logger.info("========================================");
-        logger.info("Iniciando cenário: {}", scenario.getName());
-        logger.info("========================================");
+        log.info("========================================");
+        log.info("Iniciando cenário: {}", scenario.getName());
+        log.info("========================================");
     }
 
     @After(order = 0)
@@ -40,16 +39,16 @@ public class Hooks {
                     byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
                     scenario.attach(screenshot, "image/png", "Screenshot - " + scenario.getName());
                 } catch (Exception e) {
-                    logger.error("Erro ao capturar screenshot: {}", e.getMessage());
+                    log.error("Erro ao capturar screenshot: {}", e.getMessage());
                 }
             }
 
             DriverFactory.quitDriver();
         }
 
-        logger.info("========================================");
-        logger.info("Cenário finalizado: {}", scenario.getName());
-        logger.info("Status: {}", scenario.getStatus());
-        logger.info("========================================\n");
+        log.info("========================================");
+        log.info("Cenário finalizado: {}", scenario.getName());
+        log.info("Status: {}", scenario.getStatus());
+        log.info("========================================\n");
     }
 }

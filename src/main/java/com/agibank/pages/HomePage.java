@@ -5,7 +5,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class HomePage extends BasePage {
 
     // ========== LOCATORS ==========
@@ -101,7 +103,7 @@ public class HomePage extends BasePage {
                 return !title.contains("Checking your browser") && !title.contains("Just a moment");
             });
         } catch (org.openqa.selenium.TimeoutException e) {
-            logger.warn("Cloudflare challenge persiste após timeout — página pode estar bloqueada no modo headless");
+            log.warn("Cloudflare challenge persiste após timeout — página pode estar bloqueada no modo headless");
         }
         return this;
     }
@@ -206,7 +208,7 @@ public class HomePage extends BasePage {
             waitForElementVisible(submenuColunas);
             abriu = true;
         } catch (Exception e) {
-            logger.warn("Hover em O-Agibank não abriu submenu — aplicando fallback JS");
+            log.warn("Hover em O-Agibank não abriu submenu — aplicando fallback JS");
         }
         if (!abriu) {
             forceSubmenuVisible("Colunas");
@@ -226,7 +228,7 @@ public class HomePage extends BasePage {
             waitForElementVisible(submenuEmprestimos);
             abriu = true;
         } catch (Exception e) {
-            logger.warn("Hover em Produtos não abriu submenu — aplicando fallback JS");
+            log.warn("Hover em Produtos não abriu submenu — aplicando fallback JS");
         }
         if (!abriu) {
             forceSubmenuVisible("Empréstimos");
@@ -284,7 +286,7 @@ public class HomePage extends BasePage {
             waitForElementVisible(submenuEmprestimoConsignado);
             abriu = true;
         } catch (Exception e) {
-            logger.warn("Hover em Empréstimos não abriu sub-menu de 2º nível — aplicando fallback JS");
+            log.warn("Hover em Empréstimos não abriu sub-menu de 2º nível — aplicando fallback JS");
         }
         if (!abriu) {
             forceSubmenuVisible("Empréstimo Consignado");
@@ -482,9 +484,9 @@ public class HomePage extends BasePage {
         boolean tituloValido = !title.isEmpty();
         boolean temArtigos = temArtigosVisiveis();
 
-        logger.info("URL: {}", url);
-        logger.info("Título: {}", title);
-        logger.info("Tem artigos: {}", temArtigos);
+        log.info("URL: {}", url);
+        log.info("Título: {}", title);
+        log.info("Tem artigos: {}", temArtigos);
 
         return urlCorreta && tituloValido && temArtigos;
     }
@@ -495,10 +497,10 @@ public class HomePage extends BasePage {
         boolean redesSociaisOk = todasRedesSociaisVisiveis();
         boolean artigosOk = temArtigosVisiveis();
 
-        logger.info("Menus principais: {}", menusOk);
-        logger.info("Widgets laterais: {}", widgetsOk);
-        logger.info("Redes sociais: {}", redesSociaisOk);
-        logger.info("Artigos: {}", artigosOk);
+        log.info("Menus principais: {}", menusOk);
+        log.info("Widgets laterais: {}", widgetsOk);
+        log.info("Redes sociais: {}", redesSociaisOk);
+        log.info("Artigos: {}", artigosOk);
 
         return menusOk && widgetsOk && redesSociaisOk && artigosOk;
     }

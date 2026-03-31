@@ -14,6 +14,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <selenium.version>4.27.0</selenium.version>
         <cucumber.version>7.20.1</cucumber.version>
         <junit.version>5.11.3</junit.version>
@@ -143,6 +144,7 @@
                     <includes>
                         <include>**/*Runner.java</include>
                     </includes>
+                    <argLine>-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8</argLine>
                 </configuration>
             </plugin>
         </plugins>

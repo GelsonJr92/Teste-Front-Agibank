@@ -3,10 +3,12 @@ package com.agibank.pages;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Page Object para validações de responsividade
  */
+@Slf4j
 public class ResponsividadePage extends BasePage {
 
     public ResponsividadePage(WebDriver driver) {
@@ -15,7 +17,7 @@ public class ResponsividadePage extends BasePage {
 
     public void definirResolucao(int largura, int altura) {
         driver.manage().window().setSize(new org.openqa.selenium.Dimension(largura, altura));
-        logger.info("Resolução definida para: {}x{}", largura, altura);
+        log.info("Resolução definida para: {}x{}", largura, altura);
 
         // Para resoluções mobile, adiciona meta viewport
         if (largura < 500) {
@@ -23,13 +25,13 @@ public class ResponsividadePage extends BasePage {
                     "var meta = document.createElement('meta');" + "meta.name = 'viewport';"
                             + "meta.content = 'width=" + largura + ", initial-scale=1';"
                             + "document.getElementsByTagName('head')[0].appendChild(meta);");
-            logger.debug("Meta viewport adicionada para resolução mobile");
+            log.debug("Meta viewport adicionada para resolução mobile");
         }
 
         // Aguarda viewport estar estável
         wait.until((ExpectedCondition<Boolean>) driver -> {
             Long currentWidth = getViewportWidth();
-            logger.debug("Viewport atual: {}px (esperado: ~{}px)", currentWidth, largura);
+            log.debug("Viewport atual: {}px (esperado: ~{}px)", currentWidth, largura);
             return currentWidth != null;
         });
     }
@@ -40,7 +42,7 @@ public class ResponsividadePage extends BasePage {
         Long clientWidth = (Long) ((JavascriptExecutor) driver)
                 .executeScript("return document.documentElement.clientWidth;");
 
-        logger.debug("ScrollWidth: {}px, ClientWidth: {}px", scrollWidth, clientWidth);
+        log.debug("ScrollWidth: {}px, ClientWidth: {}px", scrollWidth, clientWidth);
         // Aceita até 10px de diferença (margem para scrollbar e padding)
         return scrollWidth <= clientWidth + 10;
     }
@@ -65,7 +67,7 @@ public class ResponsividadePage extends BasePage {
         // Aceita até 520px considerando a limitação do Chrome
         boolean viewportCorreta = viewportWidth <= 520;
 
-        logger.info("Mobile - Viewport: {}px, Válido: {}", viewportWidth, viewportCorreta);
+        log.info("Mobile - Viewport: {}px, Válido: {}", viewportWidth, viewportCorreta);
         return viewportCorreta;
     }
 
@@ -73,7 +75,7 @@ public class ResponsividadePage extends BasePage {
         Long viewportWidth = getViewportWidth();
         boolean viewportCorreta = viewportWidth > 480 && viewportWidth <= 1024;
 
-        logger.info("Tablet - Viewport: {}px, Válido: {}", viewportWidth, viewportCorreta);
+        log.info("Tablet - Viewport: {}px, Válido: {}", viewportWidth, viewportCorreta);
         return viewportCorreta;
     }
 
@@ -81,7 +83,7 @@ public class ResponsividadePage extends BasePage {
         Long viewportWidth = getViewportWidth();
         boolean viewportCorreta = viewportWidth > 1024;
 
-        logger.info("Desktop - Viewport: {}px, Válido: {}", viewportWidth, viewportCorreta);
+        log.info("Desktop - Viewport: {}px, Válido: {}", viewportWidth, viewportCorreta);
         return viewportCorreta;
     }
 

@@ -2,7 +2,9 @@ package com.agibank.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class SearchResultPage extends BasePage {
 
     private final By tituloResultados = By.xpath("//h1[contains(text(), 'Resultados encontrados para:')]");
@@ -156,10 +158,10 @@ public class SearchResultPage extends BasePage {
         boolean redesSociaisOk = todasRedesSociaisVisiveis();
         boolean footerOk = todosLinksFooterVisiveis();
 
-        logger.info("Menus principais: {}", menusOk);
-        logger.info("Widgets laterais: {}", widgetsOk);
-        logger.info("Redes sociais: {}", redesSociaisOk);
-        logger.info("Links footer: {}", footerOk);
+        log.info("Menus principais: {}", menusOk);
+        log.info("Widgets laterais: {}", widgetsOk);
+        log.info("Redes sociais: {}", redesSociaisOk);
+        log.info("Links footer: {}", footerOk);
 
         return menusOk && widgetsOk && redesSociaisOk && footerOk;
     }

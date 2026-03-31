@@ -5,8 +5,7 @@ import com.agibank.pages.SearchPage;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import org.junit.jupiter.api.Assertions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -14,9 +13,9 @@ import java.nio.charset.StandardCharsets;
 /**
  * Steps definitions para os testes de busca com Cucumber.
  */
+@Slf4j
 public class BuscaSteps {
 
-    private static final Logger logger = LoggerFactory.getLogger(BuscaSteps.class);
     private final ScenarioContext context;
 
     public BuscaSteps(ScenarioContext context) {
@@ -102,18 +101,18 @@ public class BuscaSteps {
 
     @Então("todos os elementos da página de resultados devem estar presentes")
     public void todosOsElementosDaPaginaDeResultadosDevemEstarPresentes() {
-        logger.info("\n=== Validando Página de Resultados ===");
+        log.info("\n=== Validando Página de Resultados ===");
 
         boolean menusOk = context.getSearchResultPage().todosMenusPrincipaisVisiveis();
-        logger.info("✓ Menus principais: {}", menusOk ? "OK" : "FALHOU");
+        log.info("✓ Menus principais: {}", menusOk ? "OK" : "FALHOU");
 
         boolean redesSociaisOk = context.getSearchResultPage().todasRedesSociaisVisiveis();
-        logger.info("✓ Redes sociais: {}", redesSociaisOk ? "OK" : "FALHOU");
+        log.info("✓ Redes sociais: {}", redesSociaisOk ? "OK" : "FALHOU");
 
         boolean footerOk = context.getSearchResultPage().todosLinksFooterVisiveis();
-        logger.info("✓ Links footer: {}", footerOk ? "OK" : "FALHOU");
+        log.info("✓ Links footer: {}", footerOk ? "OK" : "FALHOU");
 
-        logger.info("======================================\n");
+        log.info("======================================\n");
 
         Assertions.assertTrue(menusOk, "Menus principais devem estar visíveis na página de resultados");
     }

@@ -12,13 +12,12 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.agibank.config.ConfigurationManager;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BasePage {
 
-    protected static final Logger logger = LoggerFactory.getLogger(BasePage.class);
     protected WebDriver driver;
     protected WebDriverWait wait;
 
@@ -70,9 +69,9 @@ public class BasePage {
                             "  el.style.opacity='1';" +
                             "}",
                     driver.findElement(locator));
-            logger.debug("Visibilidade forçada via JS: {}", locator);
+            log.debug("Visibilidade forçada via JS: {}", locator);
         } catch (Exception e) {
-            logger.debug("Não foi possível forçar visibilidade: {}", locator);
+            log.debug("Não foi possível forçar visibilidade: {}", locator);
         }
     }
 
@@ -124,21 +123,21 @@ public class BasePage {
                 Actions actions = new Actions(driver);
                 actions.moveToElement(element).perform();
 
-                logger.debug("Hover realizado com sucesso no elemento: {}", locator);
+                log.debug("Hover realizado com sucesso no elemento: {}", locator);
                 return;
             } catch (Exception e) {
                 attempt++;
-                logger.warn("Falha no hover tentativa {} de {}: {}", attempt, maxRetries, e.getMessage());
+                log.warn("Falha no hover tentativa {} de {}: {}", attempt, maxRetries, e.getMessage());
 
                 if (attempt >= maxRetries) {
                     try {
-                        logger.info("Tentando click direto em: {}", locator);
+                        log.info("Tentando click direto em: {}", locator);
                         WebElement element = driver.findElement(locator);
                         element.click();
-                        logger.info("Click direto concluído");
+                        log.info("Click direto concluído");
                         return;
                     } catch (Exception jsError) {
-                        logger.error("Falha ao realizar hover após {} tentativas: {}", maxRetries, locator);
+                        log.error("Falha ao realizar hover após {} tentativas: {}", maxRetries, locator);
                         throw new RuntimeException("Não foi possível realizar hover: " + locator, jsError);
                     }
                 }
