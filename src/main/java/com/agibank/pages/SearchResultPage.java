@@ -3,19 +3,14 @@ package com.agibank.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-/**
- * Page Object para a página de resultados de busca
- */
 public class SearchResultPage extends BasePage {
 
-    // Locators
     private final By tituloResultados = By.xpath("//h1[contains(text(), 'Resultados encontrados para:')]");
     private final By termoBuscado = By.xpath("//h1/following-sibling::*");
     private final By mensagemNenhumResultado = By.xpath("//p[contains(text(), 'Lamentamos, mas nada foi encontrado')]");
     private final By resultados = By.cssSelector("article, .post");
     private final By titulosResultados = By.cssSelector("article h2, .entry-title");
 
-    // Widgets laterais
     private final By bannerConsignado = By.xpath("//*[contains(text(), 'Simule hoje seu Consignado')]");
     private final By widgetNewsletter = By.xpath("//*[contains(text(), 'Inscreva-se em nossa Newsletter')]");
     private final By campoEmailNewsletter = By.xpath(
@@ -62,76 +57,46 @@ public class SearchResultPage extends BasePage {
 
     // ========== MÉTODOS DE VALIDAÇÃO - CABEÇALHO ==========
 
-    /**
-     * Verifica se título de resultados está visível
-     */
     public boolean isTituloResultadosVisivel() {
         return isElementVisible(tituloResultados);
     }
 
-    /**
-     * Obtém o termo buscado exibido na página
-     */
     public String getTermoBuscado() {
         return getElementText(termoBuscado);
     }
 
-    /**
-     * Verifica se mensagem de nenhum resultado está visível
-     */
     public boolean isMensagemNenhumResultadoVisivel() {
         return isElementVisible(mensagemNenhumResultado);
     }
 
-    /**
-     * Verifica se há resultados
-     */
     public boolean temResultados() {
         return !driver.findElements(resultados).isEmpty();
     }
 
-    /**
-     * Obtém quantidade de resultados
-     */
     public int getQuantidadeResultados() {
         return driver.findElements(resultados).size();
     }
 
     // ========== MÉTODOS DE VALIDAÇÃO - WIDGETS ==========
 
-    /**
-     * Verifica se banner de Consignado está visível
-     */
     public boolean isBannerConsignadoVisivel() {
         return isElementVisible(bannerConsignado);
     }
 
-    /**
-     * Verifica se widget de Newsletter está visível
-     */
     public boolean isWidgetNewsletterVisivel() {
         return isElementVisible(widgetNewsletter);
     }
 
-    /**
-     * Verifica se campo de email da Newsletter está visível
-     */
     public boolean isCampoEmailNewsletterVisivel() {
         return isElementVisible(campoEmailNewsletter);
     }
 
-    /**
-     * Verifica se botão Assinar está visível
-     */
     public boolean isBotaoAssinarVisivel() {
         return isElementVisible(botaoAssinar);
     }
 
     // ========== MÉTODOS DE VALIDAÇÃO - MENUS ==========
 
-    /**
-     * Verifica se todos os menus principais estão visíveis
-     */
     public boolean todosMenusPrincipaisVisiveis() {
         return isElementVisible(menuOAgibank) &&
                 isElementVisible(menuProdutos) &&
@@ -144,9 +109,6 @@ public class SearchResultPage extends BasePage {
 
     // ========== MÉTODOS DE VALIDAÇÃO - REDES SOCIAIS ==========
 
-    /**
-     * Verifica se todos os ícones de redes sociais estão visíveis
-     */
     public boolean todasRedesSociaisVisiveis() {
         scrollToElement(linkFacebook);
         return isElementVisible(linkFacebook) &&
@@ -155,9 +117,6 @@ public class SearchResultPage extends BasePage {
                 isElementVisible(linkTiktok);
     }
 
-    /**
-     * Verifica se Facebook está visível
-     */
     public boolean isLinkFacebookVisivel() {
         scrollToElement(linkFacebook);
         return isElementVisible(linkFacebook);
@@ -180,9 +139,6 @@ public class SearchResultPage extends BasePage {
 
     // ========== MÉTODOS DE VALIDAÇÃO - FOOTER ==========
 
-    /**
-     * Verifica se todos os links do footer estão visíveis
-     */
     public boolean todosLinksFooterVisiveis() {
         scrollToElement(footerMenuOAgibank);
         return isElementVisible(footerMenuOAgibank) &&
@@ -194,9 +150,6 @@ public class SearchResultPage extends BasePage {
                 isElementVisible(footerMenuStories);
     }
 
-    /**
-     * Validação completa da página de resultados
-     */
     public boolean validarPaginaCompleta() {
         boolean menusOk = todosMenusPrincipaisVisiveis();
         boolean widgetsOk = isBannerConsignadoVisivel() && isWidgetNewsletterVisivel();

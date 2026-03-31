@@ -81,9 +81,6 @@ public class SearchPage extends BasePage {
         }
     }
 
-    /**
-     * Preenche o campo de busca
-     */
     public SearchPage preencherCampoBusca(String termo) {
         try {
             WebElement campo = waitForElementVisible(searchInput);
@@ -99,9 +96,6 @@ public class SearchPage extends BasePage {
         return this;
     }
 
-    /**
-     * Submete a busca pressionando Enter
-     */
     public SearchResultPage submeterBusca() {
         WebElement campo = waitForElementVisible(searchInput);
         campo.sendKeys(Keys.ENTER);
@@ -109,17 +103,11 @@ public class SearchPage extends BasePage {
         return new SearchResultPage(driver);
     }
 
-    /**
-     * Realiza uma busca completa (preenche e submete)
-     */
     public SearchResultPage realizarBusca(String termo) {
         preencherCampoBusca(termo);
         return submeterBusca();
     }
 
-    /**
-     * Verifica se há resultados de busca
-     */
     public boolean temResultados() {
         try {
             List<WebElement> results = driver.findElements(searchResults);
@@ -129,37 +117,22 @@ public class SearchPage extends BasePage {
         }
     }
 
-    /**
-     * Retorna a quantidade de resultados
-     */
     public int getQuantidadeResultados() {
         return driver.findElements(searchResults).size();
     }
 
-    /**
-     * Verifica se a mensagem de "nenhum resultado" está visível
-     */
     public boolean isMensagemSemResultadosVisivel() {
         return isElementVisible(noResultsMessage);
     }
 
-    /**
-     * Retorna o texto do primeiro resultado
-     */
     public String getPrimeiroResultadoTitulo() {
         return getElementText(searchResultTitle);
     }
 
-    /**
-     * Verifica se o campo de busca está visível
-     */
     public boolean isCampoBuscaVisivel() {
         return isElementVisible(searchInput);
     }
 
-    /**
-     * Verifica se algum resultado contém o termo buscado
-     */
     public boolean resultadosContemTermo(String termo) {
         List<WebElement> titles = driver.findElements(searchResultTitle);
         return titles.stream()

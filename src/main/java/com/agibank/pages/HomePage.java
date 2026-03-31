@@ -6,16 +6,10 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-/**
- * Page Object para a página inicial do Blog do Agi Representa todos os
- * elementos e ações da home
- * page
- */
 public class HomePage extends BasePage {
 
     // ========== LOCATORS ==========
 
-    // Cabeçalho
     private final By logo = By.cssSelector("img[alt*='logo'], .site-logo, .custom-logo");
     private final By searchIcon = By.cssSelector("a.astra-search-icon, a.slide-search");
     private final By menuPrincipal = By.cssSelector("nav.main-navigation, .primary-menu");
@@ -35,13 +29,12 @@ public class HomePage extends BasePage {
             "//nav//span[contains(text(), 'Sua segurança') or contains(text(), 'Sua seguranca')]");
     private final By menuStories = By.xpath("//nav//span[contains(text(), 'Stories')]");
 
-    // Submenus — escopados a //nav// pelo mesmo motivo
+    // Submenu "O Agibank"
     private final By submenuColunas = By.xpath("//nav//span[contains(text(), 'Colunas')]");
     private final By submenuNoticias = By
             .xpath("//nav//span[contains(text(), 'Notícias') or contains(text(), 'Noticias')]");
     private final By submenuCarreira = By.xpath("//nav//span[contains(text(), 'Carreira')]");
 
-    // Submenu "Produtos"
     private final By submenuEmprestimos = By
             .xpath("//nav//span[contains(text(), 'Empréstimos') or contains(text(), 'Emprestimos')]");
     private final By submenuContaCorrente = By.xpath("//nav//span[contains(text(), 'Conta Corrente')]");
@@ -53,38 +46,31 @@ public class HomePage extends BasePage {
             .xpath("//nav//span[contains(text(), 'Consórcios') or contains(text(), 'Consorcios')]");
     private final By submenuPix = By.xpath("//nav//span[contains(text(), 'Pix')]");
 
-    // Submenu "Empréstimos" (segundo nível)
     private final By submenuEmprestimoConsignado = By.xpath("//nav//span[contains(text(), 'Empréstimo Consignado')]");
     private final By submenuEmprestimoPessoal = By.xpath("//nav//span[contains(text(), 'Empréstimo Pessoal')]");
     private final By submenuEmprestimoContaLuz = By
             .xpath("//nav//span[contains(text(), 'Empréstimo na Conta de Luz')]");
 
-    // Submenu "Serviços"
     private final By submenuPortabilidade = By.xpath("//nav//span[contains(text(), 'Portabilidade')]");
     private final By submenuOpenFinance = By.xpath("//nav//span[contains(text(), 'Open Finance')]");
 
-    // Submenu "Suas finanças"
     private final By submenuPlanejamentoFinanceiro = By
             .xpath("//nav//span[contains(text(), 'Planejamento Financeiro')]");
     private final By submenuEducacaoFinanceira = By.xpath(
             "//nav//span[contains(text(), 'Educação Financeira') or contains(text(), 'Educacao Financeira')]");
 
-    // Submenu "Conta Digital"
     private final By submenuContaDigital = By.xpath("//nav//span[contains(text(), 'Conta Digital')]");
 
-    // Widgets laterais
     private final By bannerConsignado = By.xpath("//*[contains(text(), 'Simule hoje seu Consignado')]");
     private final By widgetNewsletter = By.xpath("//*[contains(text(), 'Inscreva-se em nossa Newsletter')]");
     private final By campoEmailNewsletter = By.xpath(
             "//input[@type='email' or contains(@placeholder,'email') or contains(@placeholder,'e-mail')]");
     private final By botaoAssinar = By.xpath("//button[contains(text(), 'Assinar')]");
 
-    // Conteúdo Principal
     private final By artigosDestaque = By.cssSelector("article, .post");
     private final By titulosArtigos = By.cssSelector("h2.entry-title, .post-title");
     private final By imagensArtigos = By.cssSelector("article img, .post-image");
 
-    // Sidebar
     private final By sidebar = By.cssSelector("aside, .sidebar");
     private final By widgetBusca = By.cssSelector(".widget_search");
     private final By widgetCategorias = By.cssSelector(".widget_categories");
@@ -94,7 +80,6 @@ public class HomePage extends BasePage {
     private final By footerLinks = By.cssSelector("footer a");
     private final By redesSociais = By.cssSelector(".social-links a, .social-icons a");
 
-    // Redes sociais específicas
     private final By linkFacebook = By.cssSelector("a[href*='facebook']");
     private final By linkInstagram = By.cssSelector("a[href*='instagram']");
     private final By linkLinkedin = By.cssSelector("a[href*='linkedin']");
@@ -106,9 +91,6 @@ public class HomePage extends BasePage {
 
     // ========== MÉTODOS DE NAVEGAÇÃO ==========
 
-    /**
-     * Navega para a página inicial
-     */
     public HomePage acessarPaginaInicial(String url) {
         driver.get(url);
         waitForPageLoad();
@@ -126,30 +108,21 @@ public class HomePage extends BasePage {
 
     // ========== MÉTODOS DE INTERAÇÃO - CABEÇALHO ==========
 
-    /**
-     * Clica no logo para voltar à home
-     */
     public HomePage clicarLogo() {
         clickElement(logo);
         return this;
     }
 
-    /**
-     * Clica no ícone de busca
-     */
     public SearchPage clicarLupaBusca() {
-        // Scroll para o topo
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
         waitForPageLoad();
 
-        // Em headless, o elemento existe mas pode estar com display:none
-        // Vamos usar JavaScript para forçar visibilidade e clicar
         try {
-            // Tenta o caminho normal primeiro
             waitForElementClickable(searchIcon);
             clickElementWithJS(searchIcon);
         } catch (Exception e) {
-            // Se falhar, força click via JavaScript puro (ignora visibilidade)
+            // Em headless, o ícone pode ter display:none — força visibilidade e click via
+            // JS
             ((JavascriptExecutor) driver).executeScript(
                     "var el = document.querySelector('a.astra-search-icon, a.slide-search');"
                             + "if(el) { el.style.display='block'; el.style.visibility='visible'; el.click(); }"
@@ -168,9 +141,6 @@ public class HomePage extends BasePage {
         return driver.findElements(menuItens);
     }
 
-    /**
-     * Clica em um item do menu pelo texto
-     */
     public void clicarItemMenu(String textoItem) {
         List<WebElement> itens = getItensMenu();
         for (WebElement item : itens) {
@@ -224,9 +194,6 @@ public class HomePage extends BasePage {
                 spanTextFragment);
     }
 
-    /**
-     * Passa o mouse sobre o menu "O Agibank"
-     */
     public HomePage clicarMenuOAgibank() {
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
         waitForPageLoad();
@@ -247,9 +214,6 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    /**
-     * Passa o mouse sobre o menu "Produtos"
-     */
     public HomePage clicarMenuProdutos() {
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
         waitForPageLoad();
@@ -270,74 +234,46 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    /**
-     * Passa o mouse sobre o menu "Serviços"
-     */
     public HomePage clicarMenuServicos() {
         hoverElement(menuServicos);
         return this;
     }
 
-    /**
-     * Passa o mouse sobre o menu "Suas finanças"
-     */
     public HomePage clicarMenuSuasFinancas() {
         hoverElement(menuSuasFinancas);
         return this;
     }
 
-    /**
-     * Passa o mouse sobre o menu "Seus benefícios"
-     */
     public HomePage clicarMenuSeusBeneficios() {
         hoverElement(menuSeusBeneficios);
         return this;
     }
 
-    /**
-     * Passa o mouse sobre o menu "Sua segurança"
-     */
     public HomePage clicarMenuSuaSeguranca() {
         hoverElement(menuSuaSeguranca);
         return this;
     }
 
-    /**
-     * Passa o mouse sobre o menu "Stories"
-     */
     public HomePage clicarMenuStories() {
         hoverElement(menuStories);
         return this;
     }
 
-    /**
-     * Clica no submenu "Colunas"
-     */
     public void clicarSubmenuColunas() {
         clicarMenuOAgibank();
         clickElement(submenuColunas);
     }
 
-    /**
-     * Clica no submenu "Notícias"
-     */
     public void clicarSubmenuNoticias() {
         clicarMenuOAgibank();
         clickElement(submenuNoticias);
     }
 
-    /**
-     * Clica no submenu "Carreira"
-     */
     public void clicarSubmenuCarreira() {
         clicarMenuOAgibank();
         clickElement(submenuCarreira);
     }
 
-    /**
-     * Passa o mouse sobre o submenu "Empréstimos" para revelar submenus de segundo
-     * nível
-     */
     public HomePage clicarSubmenuEmprestimos() {
         // Hover direto com Actions (sem fallback de clique que navegaria a página)
         boolean abriu = false;
@@ -356,17 +292,11 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    /**
-     * Clica no submenu "Conta Corrente"
-     */
     public void clicarSubmenuContaCorrente() {
         clicarMenuProdutos();
         clickElement(submenuContaCorrente);
     }
 
-    /**
-     * Clica no submenu "Empréstimo Consignado"
-     */
     public void clicarSubmenuEmprestimoConsignado() {
         clicarMenuProdutos();
         waitForElementVisible(submenuEmprestimos);
@@ -374,9 +304,6 @@ public class HomePage extends BasePage {
         clickElement(submenuEmprestimoConsignado);
     }
 
-    /**
-     * Clica no submenu "Empréstimo Pessoal"
-     */
     public void clicarSubmenuEmprestimoPessoal() {
         clicarMenuProdutos();
         waitForElementVisible(submenuEmprestimos);
@@ -386,9 +313,6 @@ public class HomePage extends BasePage {
 
     // ========== MÉTODOS DE VALIDAÇÃO - MENUS ==========
 
-    /**
-     * Verifica se todos os menus principais estão visíveis
-     */
     public boolean todosMenusPrincipaisVisiveis() {
         return isElementVisible(menuOAgibank) && isElementVisible(menuProdutos)
                 && isElementVisible(menuServicos) && isElementVisible(menuSuasFinancas)
@@ -396,9 +320,6 @@ public class HomePage extends BasePage {
                 && isElementVisible(menuStories);
     }
 
-    /**
-     * Verifica se menu específico está visível
-     */
     public boolean isMenuVisivel(String nomeMenu) {
         By menu = null;
         switch (nomeMenu.toLowerCase()) {
@@ -431,53 +352,38 @@ public class HomePage extends BasePage {
         return menu != null && isElementVisible(menu);
     }
 
-    /**
-     * Verifica se submenus de "O Agibank" estão presentes
-     */
     public boolean submenuOAgibankPresente() {
         clicarMenuOAgibank();
         boolean presente = isElementVisible(submenuColunas) && isElementVisible(submenuNoticias)
                 && isElementVisible(submenuCarreira);
-        clicarMenuOAgibank(); // Fecha o menu
+        clicarMenuOAgibank();
         return presente;
     }
 
-    /**
-     * Verifica se submenus de "Produtos" estão presentes
-     */
     public boolean submenuProdutosPresente() {
         clicarMenuProdutos();
         boolean presente = isElementVisible(submenuEmprestimos)
                 && isElementVisible(submenuContaCorrente) && isElementVisible(submenuCartoes)
                 && isElementVisible(submenuSeguros) && isElementVisible(submenuINSS)
                 && isElementVisible(submenuConsorcios) && isElementVisible(submenuPix);
-        clicarMenuProdutos(); // Fecha o menu
+        clicarMenuProdutos();
         return presente;
     }
 
-    /**
-     * Verifica se submenus de segundo nível de "Empréstimos" estão presentes
-     */
     public boolean submenuEmprestimosPresente() {
         clicarMenuProdutos();
         waitForElementVisible(submenuEmprestimos);
         clickElement(submenuEmprestimos);
         boolean presente = isElementVisible(submenuEmprestimoConsignado)
                 && isElementVisible(submenuEmprestimoPessoal);
-        clicarMenuProdutos(); // Fecha o menu
+        clicarMenuProdutos();
         return presente;
     }
 
-    /**
-     * Verifica se banner de Consignado está presente
-     */
     public boolean isBannerConsignadoVisivel() {
         return isElementVisible(bannerConsignado);
     }
 
-    /**
-     * Verifica se widget de Newsletter está presente
-     */
     public boolean isWidgetNewsletterVisivel() {
         scrollToElement(widgetNewsletter);
         return isElementVisible(widgetNewsletter);
@@ -485,30 +391,18 @@ public class HomePage extends BasePage {
 
     // ========== MÉTODOS DE VALIDAÇÃO - CONTEÚDO ==========
 
-    /**
-     * Verifica se artigos estão sendo exibidos
-     */
     public boolean temArtigosVisiveis() {
         return !driver.findElements(artigosDestaque).isEmpty();
     }
 
-    /**
-     * Obtém quantidade de artigos na página
-     */
     public int getQuantidadeArtigos() {
         return driver.findElements(artigosDestaque).size();
     }
 
-    /**
-     * Obtém títulos de todos os artigos visíveis
-     */
     public List<WebElement> getTitulosArtigos() {
         return driver.findElements(titulosArtigos);
     }
 
-    /**
-     * Clica no primeiro artigo
-     */
     public void clicarPrimeiroArtigo() {
         List<WebElement> titulos = getTitulosArtigos();
         if (!titulos.isEmpty()) {
@@ -518,9 +412,6 @@ public class HomePage extends BasePage {
         }
     }
 
-    /**
-     * Verifica se imagens dos artigos estão carregadas
-     */
     public boolean temImagensCarregadas() {
         List<WebElement> imagens = driver.findElements(imagensArtigos);
         if (imagens.isEmpty())
@@ -538,83 +429,51 @@ public class HomePage extends BasePage {
 
     // ========== MÉTODOS DE VALIDAÇÃO - SIDEBAR ==========
 
-    /**
-     * Verifica se sidebar está visível
-     */
     public boolean isSidebarVisivel() {
         return isElementVisible(sidebar);
     }
 
-    /**
-     * Verifica se widget de busca está presente
-     */
     public boolean temWidgetBusca() {
         return isElementVisible(widgetBusca);
     }
 
-    /**
-     * Verifica se widget de categorias está presente
-     */
     public boolean temWidgetCategorias() {
         return isElementVisible(widgetCategorias);
     }
 
     // ========== MÉTODOS DE VALIDAÇÃO - RODAPÉ ==========
 
-    /**
-     * Verifica se rodapé está visível
-     */
-
     public boolean isFooterVisivel() {
         scrollToElement(footer);
         return isElementVisible(footer);
     }
-
-    /**
-     * Obtém links do rodapé
-     */
 
     public List<WebElement> getLinksFooter() {
         scrollToElement(footer);
         return driver.findElements(footerLinks);
     }
 
-    /**
-     * Verifica se redes sociais estão presentes
-     */
     public boolean temRedesSociais() {
         scrollToElement(footer);
         return !driver.findElements(redesSociais).isEmpty();
     }
 
-    /**
-     * Verifica se todos os ícones de redes sociais estão visíveis
-     */
     public boolean todasRedesSociaisVisiveis() {
         scrollToElement(linkFacebook);
         return isElementVisible(linkFacebook) && isElementVisible(linkInstagram)
                 && isElementVisible(linkLinkedin) && isElementVisible(linkTiktok);
     }
 
-    /**
-     * Verifica se campo de email da Newsletter está visível
-     */
     public boolean isCampoEmailNewsletterVisivel() {
         return isElementVisible(campoEmailNewsletter);
     }
 
-    /**
-     * Verifica se botão Assinar está visível
-     */
     public boolean isBotaoAssinarVisivel() {
         return isElementVisible(botaoAssinar);
     }
 
     // ========== MÉTODOS DE VALIDAÇÃO - PÁGINA ==========
 
-    /**
-     * Verifica se a página inicial foi carregada corretamente
-     */
     public boolean isPaginaInicialCarregada() {
         String url = driver.getCurrentUrl();
         String title = driver.getTitle();
@@ -630,9 +489,6 @@ public class HomePage extends BasePage {
         return urlCorreta && tituloValido && temArtigos;
     }
 
-    /**
-     * Validação completa da página inicial
-     */
     public boolean validarPaginaCompleta() {
         boolean menusOk = todosMenusPrincipaisVisiveis();
         boolean widgetsOk = isBannerConsignadoVisivel() && isWidgetNewsletterVisivel();

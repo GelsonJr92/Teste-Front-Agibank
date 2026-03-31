@@ -172,9 +172,6 @@ public class DriverFactory {
         }
     }
 
-    /**
-     * Retorna o driver da thread atual, ou cria um novo se não existir.
-     */
     public static WebDriver getDriver() {
         WebDriver currentDriver = driver.get();
         if (currentDriver == null) {
@@ -183,9 +180,6 @@ public class DriverFactory {
         return currentDriver;
     }
 
-    /**
-     * Encerra o driver da thread atual.
-     */
     public static void quitDriver() {
         if (driver.get() != null) {
             try {

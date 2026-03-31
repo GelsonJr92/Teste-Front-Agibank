@@ -16,9 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.agibank.config.ConfigurationManager;
 
-/**
- * Classe base para todas as Page Objects.
- */
 public class BasePage {
 
     protected static final Logger logger = LoggerFactory.getLogger(BasePage.class);

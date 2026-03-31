@@ -13,9 +13,6 @@ public class ResponsividadePage extends BasePage {
         super(driver);
     }
 
-    /**
-     * Define a resolução da janela do navegador
-     */
     public void definirResolucao(int largura, int altura) {
         driver.manage().window().setSize(new org.openqa.selenium.Dimension(largura, altura));
         logger.info("Resolução definida para: {}x{}", largura, altura);
@@ -37,9 +34,6 @@ public class ResponsividadePage extends BasePage {
         });
     }
 
-    /**
-     * Verifica se não há scroll horizontal na página
-     */
     public boolean naoTemScrollHorizontal() {
         Long scrollWidth = (Long) ((JavascriptExecutor) driver)
                 .executeScript("return document.documentElement.scrollWidth;");
@@ -51,16 +45,10 @@ public class ResponsividadePage extends BasePage {
         return scrollWidth <= clientWidth + 10;
     }
 
-    /**
-     * Obtém a largura atual da viewport
-     */
     public Long getViewportWidth() {
         return (Long) ((JavascriptExecutor) driver).executeScript("return window.innerWidth;");
     }
 
-    /**
-     * Verifica se há overflow horizontal
-     */
     public boolean temOverflow() {
         Boolean hasOverflow = (Boolean) ((JavascriptExecutor) driver)
                 .executeScript("return document.body.scrollWidth > window.innerWidth;");
@@ -81,9 +69,6 @@ public class ResponsividadePage extends BasePage {
         return viewportCorreta;
     }
 
-    /**
-     * Verifica se o layout está adaptado para tablet (480px < viewport ≤ 1024px)
-     */
     public boolean isLayoutTablet() {
         Long viewportWidth = getViewportWidth();
         boolean viewportCorreta = viewportWidth > 480 && viewportWidth <= 1024;
@@ -92,9 +77,6 @@ public class ResponsividadePage extends BasePage {
         return viewportCorreta;
     }
 
-    /**
-     * Verifica se o layout está adaptado para desktop (> 1024px)
-     */
     public boolean isLayoutDesktop() {
         Long viewportWidth = getViewportWidth();
         boolean viewportCorreta = viewportWidth > 1024;
@@ -103,9 +85,6 @@ public class ResponsividadePage extends BasePage {
         return viewportCorreta;
     }
 
-    /**
-     * Verifica se o layout está adaptado para o tipo de dispositivo especificado
-     */
     public boolean isLayoutAdaptado(String tipoDispositivo) {
         switch (tipoDispositivo.toLowerCase()) {
             case "mobile":
